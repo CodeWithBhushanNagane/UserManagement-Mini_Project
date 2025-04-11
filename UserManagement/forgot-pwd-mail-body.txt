@@ -1,0 +1,11 @@
+Hi {FULLNAME}. <br/>
+<br/>
+Your account password is reseted.<br/>
+<br/>
+Please find your new password below.<br/>
+<br/>
+New Password: {TEMP-PWD}<br/>
+<br/>
+<br/>
+Best regards,<br/>
+Management Team.<br/>

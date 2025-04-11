@@ -1,5 +1,7 @@
 package com.usermanagement.service;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +17,16 @@ import com.usermanagement.bindings.UserDetails;
 import com.usermanagement.bindings.UserLogin;
 import com.usermanagement.entity.User;
 import com.usermanagement.repository.UserRepository;
+import com.usermanagement.utils.EmailUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	EmailUtils emailUtils;
 
 	@Override
 	public String createUser(UserDetails userDetails) {
@@ -42,7 +48,8 @@ public class UserServiceImpl implements UserService {
 				returnValue = "User creation failed.";
 			}
 
-			// TODO : send registration email
+			emailUtils.sendEmail(savedUser.getEmail(), "Registration Successful",
+					readMailBody(savedUser.getFullName(), password, "reg-email-body.txt"));
 		}
 		return returnValue;
 	}
@@ -156,11 +163,14 @@ public class UserServiceImpl implements UserService {
 		User byEmail = userRepository.findByEmail(email);
 		if (byEmail == null) {
 			return "Invalid Email";
+		} else {
+			String newPassword = generateRandomPassword();
+			byEmail.setPassword(newPassword);
+			userRepository.save(byEmail);
+			emailUtils.sendEmail(byEmail.getEmail(), "Reset Password Success",
+					readMailBody(byEmail.getFullName(), newPassword, "forgot-pwd-mail-body.txt"));
+			return "Forgot password success.";
 		}
-
-		// TODO : send new password to user by email
-
-		return null;
 	}
 
 	@Override
@@ -196,4 +206,26 @@ public class UserServiceImpl implements UserService {
 		return password.toString();
 	}
 
+	public String readMailBody(String fullName, String pwd, String fileName) {
+		String url = "";
+		String mailBody = "";
+		StringBuilder buffer = new StringBuilder();
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				buffer.append(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		mailBody = buffer.toString();
+		mailBody = mailBody.replace("{FULLNAME}", fullName);
+		mailBody = mailBody.replace("{TEMP-PWD}", pwd);
+		mailBody = mailBody.replace("{URL}", url);
+		mailBody = mailBody.replace("{PWD}", pwd);
+
+		return mailBody;
+	}
 }
