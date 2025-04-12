@@ -176,8 +176,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDetails getUserByEmail(String email) {
 		User userByEmail = userRepository.findByEmail(email);
-		UserDetails userDetails = new UserDetails();
-		BeanUtils.copyProperties(userByEmail, userDetails);
+		UserDetails userDetails = null;
+		if(userByEmail != null ) {
+			userDetails = new UserDetails();
+			BeanUtils.copyProperties(userByEmail, userDetails);
+		}
 		return userDetails;
 	}
 
