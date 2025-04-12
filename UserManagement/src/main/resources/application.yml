@@ -2,24 +2,27 @@ spring:
   application:
     name: UserManagement
   mail:
-    host: null
-    port: 0
-    username: null
-    password: null
-
-
-datasource:
-  url: jdbc:mysql://localhost:3306/reportsdb
-  username: root
-  password: Bhushan@9822
-  driver-class-name: com.mysql.cj.jdbc.Driver
-
-jpa:
-  hibernate:
-    ddl-auto: update  # options: none | validate | update | create | create-drop
-  show-sql: true
-  properties:
+    host: smtp.gmail.com
+    port: 587
+    username: #configure your email
+    password: #configure your email app password here
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/usermanagementdb
+    username: #username
+    password: #password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
     hibernate:
+      ddl-auto: update  # options: none | validate | update | create | create-drop
+    show-sql: true
+    properties:
+      hibernate:
       format_sql: true
       dialect: org.hibernate.dialect.MySQL8Dialect
 

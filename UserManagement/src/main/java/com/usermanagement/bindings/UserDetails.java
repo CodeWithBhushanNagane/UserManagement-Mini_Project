@@ -9,8 +9,8 @@ public class UserDetails {
 
 	private String fullName;
 	private String email;
-	private Long mobile;
+	private String mobile;
 	private String gender;
-	private LocalDate dob;
+	private LocalDate dateOfBirth;
 	private Long ssn;
 }

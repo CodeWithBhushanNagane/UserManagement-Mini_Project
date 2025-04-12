@@ -1,0 +1,15 @@
+Hi {FULLNAME}. <br/>
+<br/>
+Thank you for registering with us.<br/>
+<br/>
+Your account has been successfully created.<br/>
+<br/>
+Please find your temporary password below.<br/>
+<br/>
+Temporary Password: {TEMP-PWD}<br/>
+<br/>
+<a href="{URL}">Click Here To Unlock Your Account</a><br/>
+<br/>
+<br/>
+Best regards,<br/>
+Management Team.<br/>
